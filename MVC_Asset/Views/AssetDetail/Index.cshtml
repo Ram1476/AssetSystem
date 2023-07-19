@@ -1,0 +1,210 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+
+@model IPagedList<MVC_Asset.Models.AssetDetails>
+
+@{
+    ViewBag.Title = "Index";
+    int intSno = 0;
+}
+
+
+
+<h2>Asset-Details-Entry</h2>
+<h3>Welcome @User.Identity.Name - @ViewBag.Role</h3>
+<br />
+
+<p>
+    <a href="@Url.Action("Create","AssetDetail")" class=" btn btn-default"><i class="fa fa-plus "></i>  Create New</a>
+</p>
+<table class="table table-striped">
+    <thead class="table-heading">
+        <tr>
+            <th>
+                S.No
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().AssetEntryID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().AssetId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().AssetType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().AssetNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().AssetDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().PurchaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().WarrantyStartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().WarrantyEndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Serial_No)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Isdeleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Attachment)
+            </th>
+
+            <th colspan="2" style="text-align:center">Actions</th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        intSno = intSno + 1;
+        var imgsrc = "";
+        <tr>
+            <td>
+                @intSno
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssetEntryID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssetId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssetType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssetNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssetDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WarrantyStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WarrantyEndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Serial_No)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isdeleted)
+            </td>
+            @if (item.Attachment != null)
+            {
+                //var base64 = Convert.ToBase64String(item.Attachment);
+                imgsrc = @Url.Content(item.ImagePath);
+                //var stringbyte = BitConverter.ToString(item.Attachment);
+
+            }
+            else
+            {
+                imgsrc = null;
+            }
+
+            <td>
+
+                @{
+                    <img src="@imgsrc" width="80" height="80" />
+                }
+
+            </td>
+
+            <td>
+                <a style="font-size: 12px;" , href="@Url.Action("Edit","AssetDetail",new {id = item.AssetEntryID})" class="btn btn-default"><i class="fa fa-pencil"></i>  Edit</a>
+
+            </td>
+            <td>
+                <a style="font-size: 12px;" , onclick="Delete('@item.AssetNo',id = @item.AssetEntryID)" class="btn btn-default"><i class="fa fa-trash"></i>  Delete</a>
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.PagedListPager(Model, i => Url.Action("Index", "AssetDetail", new { i, search = Request.QueryString["search"] }))
+<div id="openpopup" style="display:none"></div>
+
+
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.8.0.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.22/jquery-ui.js"></script>
+<link rel="Stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/redmond/jquery-ui.css" />
+<script src="~/Scripts/alertify.min.js"></script>
+<script>
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            if (successMessage != '') {
+                if (successMessage != "No Data Available") {
+                    alertify.success('@TempData["SuccessMessage"]');
+                }
+                else {
+                    alertify.error("No Data Available")
+                }
+            }
+
+        });       
+</script>
+
+<script type="text/javascript">
+
+    function Delete(AssetNo, id) {
+        alertify.confirm('ASSET TRACKING SYSTEM', 'Are you sure, You want to delete this Record?', function (e) {
+            if (e) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Assetdetail/Delete?AssetNo=" + AssetNo + "&Id=" + id,
+                    contentType: "Json",
+                    success: function (response) {
+                        if (response == "1") {
+                            alertify.alert("Error Deleting", "Value Assigned to a User cannot be deleted");
+                        }
+                        else if (response == "2") {
+                            alertify.alert("Error Deleting", "Asset is Already in Deleted  Status");
+                        }
+                        else {
+                            var x = $("#openpopup");
+                            x.load("/AssetDetail/Deleted?id=" + id, function () {
+                                x.dialog({
+                                    show: {
+                                        effect: "blind",
+                                        duration: 700
+                                    },
+                                    hide: {
+                                        effect: "explode",
+                                        duration: 500
+                                    },
+                                    modal: true,
+                                    width: 450,
+                                    height: 500,
+                                    title: "Update Reason For Deleting the record for the ID - " + id,
+                                    resizable: false
+                                });
+                            });
+                        }
+                    }
+
+                });
+            }
+        }, null);
+    }
+
+
+</script>
+

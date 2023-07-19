@@ -1,0 +1,202 @@
+﻿@model MVC_Asset.Controllers.AssignAsset
+
+@{
+    ViewBag.Title = "Create";
+
+}
+
+<h2><b>AssignAsset</b></h2>
+<div class="form-body">
+    @using (Html.BeginForm())
+    {
+        <div class="form-horizontal">
+
+            @Html.HiddenFor(model => model.UserAssetId)
+
+            @Html.HiddenFor(model => model.AssetEntryId)
+
+            @*<div class="form-group">
+            @Html.LabelFor(model => model.AssetEntryId)
+            @Html.EditorFor(model => model.AssetEntryId, new { htmlAttributes = new { @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.AssetEntryId)
+        </div>*@
+
+                @Html.HiddenFor(model => model.UserEntryID, new { htmlAttributes = new { @readonly = "readonly" } })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserName)
+                @Html.EditorFor(model => model.UserName)
+                @*<input type="text" id="UserName" name="UserName"  />*@
+                @Html.ValidationMessageFor(model => model.UserName)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.AssetType)
+                @Html.DropDownListFor(model => model.AssetType, ViewBag.Message as SelectList, "--Select the AssetType--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AssetType)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.AssetDetail)
+                @Html.DropDownListFor(model => model.AssetDetail, new SelectList(" "), "--Select the AssetDetail--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AssetDetail)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.StartDate)
+                @Html.EditorFor(model => model.StartDate)
+                @Html.ValidationMessageFor(model => model.StartDate)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.EndDate)
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.EndDate)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Remarks)
+                @Html.EditorFor(model => model.Remarks)
+                @Html.ValidationMessageFor(model => model.Remarks)
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn button" />
+                <input type="reset" value="Reset" class="btn button" />
+            </div>
+        </div>
+    }
+</div>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.8.0.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.22/jquery-ui.js"></script>
+<link rel="Stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/redmond/jquery-ui.css" />
+<script>
+    $(function () {
+        $("#UserName").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/AssignToUser/getname/",
+                    data: "{'UserName':'" + request.term + "'}",
+                    datatype: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=uf-8",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return item
+                        }))
+                    },
+                });
+            },
+            minLength: 1
+        });
+    });
+
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#AssetType").change(function () {
+            $.get("/AssignToUser/GetUnnassigned",{ Atype: $("#AssetType").val() }, function (data) {
+                $("#AssetDetail").empty();
+                $("#AssetEntryId").val('');
+                $("#AssetDetail").append("<option value = '" + " " + "'>" + "--Select the AssetDetail--" + "</option>")
+                $.each(data, function (index, row) {
+
+                    $("#AssetDetail").append("<option value = '" + row.AssetNo + "'>" + row.AssetNo + "</option>")
+                   
+                });
+            });
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    function Message() {
+
+        window.location = "https://localhost:44370/AssignToUser/index";
+
+    }
+
+    function showMessage() {
+
+        alert("Successfully data is been created");
+
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#AssetDetail").change(function () {
+            $.get("/AssignToUser/GetAssetId", { Atype: $("#AssetDetail").val() }, function (data) {
+                $("#AssetEntryId").empty();
+                $.each(data, function (index, row) {
+                    $("#AssetEntryId").val(row.AssetEntryID)
+                });
+            });
+        });
+    });
+
+</script>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval");
+}
+
+@*source: function (request, response) {
+                $.ajax({
+                    url: "/AssignToUser/getname/";
+                    data: "{'ename':'" + request.term + "'}",
+                    datatype: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=uf-8",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return item;
+                        }))
+                });
+            },
+            minLength:1
+        });
+
+    });*@
+
+ @*function gg(e) {
+        var temp;
+        var final;
+        $.ajax({
+            type: "post",
+            url: "/AssignToUser/GetUserID?BType=" + $('#AutoName').val(),
+            contentType: "html",
+            success: function (temp) {
+
+                $('#UserEntryID').empty();
+                if (temp.length > 0) {
+                    $('#UserEntryID').val(temp[0])
+                    //if (temp[0].AssertPrefix.includes('-')) {
+                    //    final = (temp[0].AssertPrefix.split("-")[0] + "-" + (Number(temp[0].AssertPrefix.split("-")[1]) + 1));
+
+                    //    $('#AssetNo').val(final);
+                    //    $('#AssetId').val(temp[0].AssetId);
+                    //    console.log(temp[0].AssetId);
+                    //}
+                    //else {
+                    //    final = temp[0].AssertPrefix + "-1"
+                    //    $('#AssetNo').val(final);
+                    //    $('#AssetId').val(temp[0].AssetId);
+                    //    console.log(temp[0].AssetId);
+                    //}
+                }
+                else {
+                    $('#UserEntryID').val('');
+
+                }
+
+            }
+        })
+
+
+    }*@

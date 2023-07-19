@@ -1,0 +1,157 @@
+﻿@model IEnumerable<MVC_Asset.Models.UserDetail>
+@{
+    ViewBag.Title = "Search";
+    int intSno = 0;
+}
+
+<br />
+
+<label style="color:black;font-size:20px">Active Status: </label><label style="padding:20px">
+    <select id="activeStatus" name="activeStatus" class="form-control" style="width:fit-content">
+        <option value="Yes" selected>Yes</option>
+        <option value="No">No</option>
+    </select>
+</label>
+<label style="padding:20px"><input type="submit" class="btn btn-default" style="background-color: #2a3843 ; color:azure" id="searchBtn" value="Search" /><i class="fa fa-search"></i></label>
+<h3>Welcome @User.Identity.Name - @ViewBag.Role</h3>
+<div id="userSearch" style="display:none">
+    <table class="table table-striped">
+        <thead class="table-heading">
+            <tr>
+                <th>
+                    S.No
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().CorpId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().EmployeeId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().EmailAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().ReportingTo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().IsActive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Remarks)
+                </th>
+                <th colspan="2" style="text-align:center">Actions</th>
+            </tr>
+        </thead>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                intSno = intSno + 1;
+                <tr>
+                    <td>
+                        @intSno
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CorpId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmailAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportingTo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remarks)
+                    </td>
+                    <td>
+                        <a style="font-size: 12px;" , href="@Url.Action("Edit", "UserEntry", new { id = item.UserEntryId })" class="btn btn-default"><i class="fa fa-pencil"></i>  Edit</a>
+                    </td>
+                    <td>
+                        <a style="font-size: 12px;" , onclick="viewUser(@item.UserEntryId)" class="btn btn-default"><i class="fa fa-trash"></i>  Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+     </table>
+            
+            
+        @*@Html.PagedListPager(Model, i => Url.Action("Index", "UserEntry", new { i, search = Request.QueryString["search"] }))*@
+</div>
+
+<div id="openpopup" style="display:none"></div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.8.0.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.22/jquery-ui.js"></script>
+<link rel="Stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/redmond/jquery-ui.css" />
+<script>
+    $(document).ready(function () {
+        $("#searchBtn").click(function () {
+            var selectedValue = $("#activeStatus").val();
+            var SetData = $("#userSearch");
+            SetData.html("");
+            $.ajax({
+                type: "GET",
+                url: "/UserEntry/SearchResult?request=" + selectedValue,
+                success: function (response) {
+                    SetData.empty();
+                    SetData.show();
+                    SetData.html(response);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+        });
+
+
+    });
+</script>
+
+
+
+<script type="text/javascript">
+
+    function viewUser(AssetDetail) {
+        var x = $("#openpopup");
+        x.load("/UserEntry/AllDetails?id=" + AssetDetail, function () {
+            x.dialog({
+                show: {
+                    effect: "blind",
+                    duration: 700
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 500
+                },
+                modal: true,
+                width: 550,
+                height: 600,
+                title: "User Detail: ",
+                resizable: false
+            });
+        });
+    }
+</script>

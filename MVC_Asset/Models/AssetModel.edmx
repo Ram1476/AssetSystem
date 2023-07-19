@@ -1,0 +1,479 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AssetManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AssetDeclaration">
+          <Key>
+            <PropertyRef Name="AssetId" />
+          </Key>
+          <Property Name="AssetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssertType" Type="varchar" MaxLength="50" />
+          <Property Name="AssertPrefix" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="AssetDetail">
+          <Key>
+            <PropertyRef Name="AssetEntryID" />
+          </Key>
+          <Property Name="AssetEntryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssetId" Type="int" />
+          <Property Name="AssetType" Type="varchar" MaxLength="50" />
+          <Property Name="AssetNo" Type="varchar" MaxLength="20" />
+          <Property Name="AssetDescription" Type="varchar" MaxLength="100" />
+          <Property Name="PurchaseDate" Type="date" />
+          <Property Name="WarrantyStartDate" Type="date" />
+          <Property Name="WarrantyEndDate" Type="date" />
+          <Property Name="Serial_No" Type="varchar" MaxLength="50" />
+          <Property Name="Remarks" Type="varchar" MaxLength="100" />
+          <Property Name="Isdeleted" Type="varchar" MaxLength="3" />
+          <Property Name="Attachment" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="MultipleAttachment">
+          <Key>
+            <PropertyRef Name="serialNO" />
+          </Key>
+          <Property Name="serialNO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssetId" Type="int" />
+          <Property Name="Attachments" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="UserAsset">
+          <Key>
+            <PropertyRef Name="UserAssetId" />
+          </Key>
+          <Property Name="UserAssetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssetEntryId" Type="int" />
+          <Property Name="UserEntryID" Type="int" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="AssetType" Type="varchar" MaxLength="50" />
+          <Property Name="AssetDetail" Type="varchar" MaxLength="50" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="Remarks" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UserDetail">
+          <Key>
+            <PropertyRef Name="UserEntryId" />
+          </Key>
+          <Property Name="UserEntryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="CorpId" Type="varchar" MaxLength="50" />
+          <Property Name="EmployeeId" Type="int" />
+          <Property Name="EmailAddress" Type="varchar" MaxLength="50" />
+          <Property Name="ReportingTo" Type="varchar" MaxLength="50" />
+          <Property Name="IsActive" Type="varchar" MaxLength="3" />
+          <Property Name="Remarks" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UserLogins">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="UserPassword" Type="varchar" MaxLength="50" />
+          <Property Name="RoleId" Type="int" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__AssetDeta__Asset__11D4A34F">
+          <End Role="AssetDeclaration" Type="Self.AssetDeclaration" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AssetDetail" Type="Self.AssetDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssetDeclaration">
+              <PropertyRef Name="AssetId" />
+            </Principal>
+            <Dependent Role="AssetDetail">
+              <PropertyRef Name="AssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MultipleA__Asset__731B1205">
+          <End Role="AssetDetail" Type="Self.AssetDetail" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MultipleAttachment" Type="Self.MultipleAttachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssetDetail">
+              <PropertyRef Name="AssetEntryID" />
+            </Principal>
+            <Dependent Role="MultipleAttachment">
+              <PropertyRef Name="AssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAsset__Asset__5E1FF51F">
+          <End Role="AssetDetail" Type="Self.AssetDetail" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserAsset" Type="Self.UserAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssetDetail">
+              <PropertyRef Name="AssetEntryID" />
+            </Principal>
+            <Dependent Role="UserAsset">
+              <PropertyRef Name="AssetEntryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAsset__UserE__5F141958">
+          <End Role="UserDetail" Type="Self.UserDetail" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserAsset" Type="Self.UserAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetail">
+              <PropertyRef Name="UserEntryId" />
+            </Principal>
+            <Dependent Role="UserAsset">
+              <PropertyRef Name="UserEntryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_RoleId">
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserLogins" Type="Self.UserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRoles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="UserLogins">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AssetManagementModelStoreContainer">
+          <EntitySet Name="AssetDeclaration" EntityType="Self.AssetDeclaration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssetDetail" EntityType="Self.AssetDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MultipleAttachment" EntityType="Self.MultipleAttachment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAsset" EntityType="Self.UserAsset" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserDetail" EntityType="Self.UserDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserLogins" EntityType="Self.UserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__AssetDeta__Asset__11D4A34F" Association="Self.FK__AssetDeta__Asset__11D4A34F">
+            <End Role="AssetDeclaration" EntitySet="AssetDeclaration" />
+            <End Role="AssetDetail" EntitySet="AssetDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MultipleA__Asset__731B1205" Association="Self.FK__MultipleA__Asset__731B1205">
+            <End Role="AssetDetail" EntitySet="AssetDetail" />
+            <End Role="MultipleAttachment" EntitySet="MultipleAttachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserAsset__Asset__5E1FF51F" Association="Self.FK__UserAsset__Asset__5E1FF51F">
+            <End Role="AssetDetail" EntitySet="AssetDetail" />
+            <End Role="UserAsset" EntitySet="UserAsset" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserAsset__UserE__5F141958" Association="Self.FK__UserAsset__UserE__5F141958">
+            <End Role="UserDetail" EntitySet="UserDetail" />
+            <End Role="UserAsset" EntitySet="UserAsset" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_RoleId" Association="Self.Fk_RoleId">
+            <End Role="UserRoles" EntitySet="UserRoles" />
+            <End Role="UserLogins" EntitySet="UserLogins" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AssetManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AssetManagementDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AssetDeclarations" EntityType="AssetManagementModel.AssetDeclaration" />
+          <EntitySet Name="AssetDetails" EntityType="AssetManagementModel.AssetDetail" />
+          <EntitySet Name="UserAssets" EntityType="AssetManagementModel.UserAsset" />
+          <EntitySet Name="UserDetails" EntityType="AssetManagementModel.UserDetail" />
+          <EntitySet Name="UserLogins" EntityType="AssetManagementModel.UserLogin" />
+          <EntitySet Name="UserRoles" EntityType="AssetManagementModel.UserRole" />
+          <AssociationSet Name="Fk_AssetId" Association="AssetManagementModel.Fk_AssetId">
+            <End Role="AssetDeclaration" EntitySet="AssetDeclarations" />
+            <End Role="AssetDetail" EntitySet="AssetDetails" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_UserAstID" Association="AssetManagementModel.Fk_UserAstID">
+            <End Role="AssetDetail" EntitySet="AssetDetails" />
+            <End Role="UserAsset" EntitySet="UserAssets" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_UAuserId" Association="AssetManagementModel.Fk_UAuserId">
+            <End Role="UserDetail" EntitySet="UserDetails" />
+            <End Role="UserAsset" EntitySet="UserAssets" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_RoleId" Association="AssetManagementModel.Fk_RoleId">
+            <End Role="UserRole" EntitySet="UserRoles" />
+            <End Role="UserLogin" EntitySet="UserLogins" />
+          </AssociationSet>
+          <EntitySet Name="MultipleAttachments" EntityType="AssetManagementModel.MultipleAttachment" />
+          <AssociationSet Name="FK__MultipleA__Asset__731B1205" Association="AssetManagementModel.FK__MultipleA__Asset__731B1205">
+            <End Role="AssetDetail" EntitySet="AssetDetails" />
+            <End Role="MultipleAttachment" EntitySet="MultipleAttachments" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AssetDeclaration">
+          <Key>
+            <PropertyRef Name="AssetId" />
+          </Key>
+          <Property Name="AssetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssertType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssertPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AssetDetails" Relationship="AssetManagementModel.Fk_AssetId" FromRole="AssetDeclaration" ToRole="AssetDetail" />
+        </EntityType>
+        <EntityType Name="AssetDetail">
+          <Key>
+            <PropertyRef Name="AssetEntryID" />
+          </Key>
+          <Property Name="AssetEntryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssetId" Type="Int32" />
+          <Property Name="AssetType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="AssetDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PurchaseDate" Type="DateTime" Precision="0" />
+          <Property Name="WarrantyStartDate" Type="DateTime" Precision="0" />
+          <Property Name="WarrantyEndDate" Type="DateTime" Precision="0" />
+          <Property Name="Serial_No" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Isdeleted" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="Attachment" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="AssetDeclaration" Relationship="AssetManagementModel.Fk_AssetId" FromRole="AssetDetail" ToRole="AssetDeclaration" />
+          <NavigationProperty Name="UserAssets" Relationship="AssetManagementModel.Fk_UserAstID" FromRole="AssetDetail" ToRole="UserAsset" />
+          <NavigationProperty Name="MultipleAttachments" Relationship="AssetManagementModel.FK__MultipleA__Asset__731B1205" FromRole="AssetDetail" ToRole="MultipleAttachment" />
+        </EntityType>
+        <EntityType Name="UserAsset">
+          <Key>
+            <PropertyRef Name="UserAssetId" />
+          </Key>
+          <Property Name="UserAssetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssetEntryId" Type="Int32" />
+          <Property Name="UserEntryID" Type="Int32" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssetDetail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AssetDetail1" Relationship="AssetManagementModel.Fk_UserAstID" FromRole="UserAsset" ToRole="AssetDetail" />
+          <NavigationProperty Name="UserDetail" Relationship="AssetManagementModel.Fk_UAuserId" FromRole="UserAsset" ToRole="UserDetail" />
+        </EntityType>
+        <EntityType Name="UserDetail">
+          <Key>
+            <PropertyRef Name="UserEntryId" />
+          </Key>
+          <Property Name="UserEntryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CorpId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ReportingTo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UserAssets" Relationship="AssetManagementModel.Fk_UAuserId" FromRole="UserDetail" ToRole="UserAsset" />
+        </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RoleId" Type="Int32" />
+          <NavigationProperty Name="UserRole" Relationship="AssetManagementModel.Fk_RoleId" FromRole="UserLogin" ToRole="UserRole" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UserLogins" Relationship="AssetManagementModel.Fk_RoleId" FromRole="UserRole" ToRole="UserLogin" />
+        </EntityType>
+        <Association Name="Fk_AssetId">
+          <End Type="AssetManagementModel.AssetDeclaration" Role="AssetDeclaration" Multiplicity="0..1" />
+          <End Type="AssetManagementModel.AssetDetail" Role="AssetDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssetDeclaration">
+              <PropertyRef Name="AssetId" />
+            </Principal>
+            <Dependent Role="AssetDetail">
+              <PropertyRef Name="AssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_UserAstID">
+          <End Type="AssetManagementModel.AssetDetail" Role="AssetDetail" Multiplicity="0..1" />
+          <End Type="AssetManagementModel.UserAsset" Role="UserAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssetDetail">
+              <PropertyRef Name="AssetEntryID" />
+            </Principal>
+            <Dependent Role="UserAsset">
+              <PropertyRef Name="AssetEntryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_UAuserId">
+          <End Type="AssetManagementModel.UserDetail" Role="UserDetail" Multiplicity="0..1" />
+          <End Type="AssetManagementModel.UserAsset" Role="UserAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetail">
+              <PropertyRef Name="UserEntryId" />
+            </Principal>
+            <Dependent Role="UserAsset">
+              <PropertyRef Name="UserEntryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_RoleId">
+          <End Type="AssetManagementModel.UserRole" Role="UserRole" Multiplicity="0..1" />
+          <End Type="AssetManagementModel.UserLogin" Role="UserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="UserLogin">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MultipleAttachment">
+          <Key>
+            <PropertyRef Name="serialNO" />
+          </Key>
+          <Property Name="serialNO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssetId" Type="Int32" />
+          <Property Name="Attachments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AssetDetail" Relationship="AssetManagementModel.FK__MultipleA__Asset__731B1205" FromRole="MultipleAttachment" ToRole="AssetDetail" />
+        </EntityType>
+        <Association Name="FK__MultipleA__Asset__731B1205">
+          <End Type="AssetManagementModel.AssetDetail" Role="AssetDetail" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AssetManagementModel.MultipleAttachment" Role="MultipleAttachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssetDetail">
+              <PropertyRef Name="AssetEntryID" />
+            </Principal>
+            <Dependent Role="MultipleAttachment">
+              <PropertyRef Name="AssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AssetManagementModelStoreContainer" CdmEntityContainer="AssetManagementDBEntities">
+          <EntitySetMapping Name="AssetDeclarations">
+            <EntityTypeMapping TypeName="AssetManagementModel.AssetDeclaration">
+              <MappingFragment StoreEntitySet="AssetDeclaration">
+                <ScalarProperty Name="AssertPrefix" ColumnName="AssertPrefix" />
+                <ScalarProperty Name="AssertType" ColumnName="AssertType" />
+                <ScalarProperty Name="AssetId" ColumnName="AssetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssetDetails">
+            <EntityTypeMapping TypeName="AssetManagementModel.AssetDetail">
+              <MappingFragment StoreEntitySet="AssetDetail">
+                <ScalarProperty Name="Attachment" ColumnName="Attachment" />
+                <ScalarProperty Name="Isdeleted" ColumnName="Isdeleted" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Serial_No" ColumnName="Serial_No" />
+                <ScalarProperty Name="WarrantyEndDate" ColumnName="WarrantyEndDate" />
+                <ScalarProperty Name="WarrantyStartDate" ColumnName="WarrantyStartDate" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+                <ScalarProperty Name="AssetDescription" ColumnName="AssetDescription" />
+                <ScalarProperty Name="AssetNo" ColumnName="AssetNo" />
+                <ScalarProperty Name="AssetType" ColumnName="AssetType" />
+                <ScalarProperty Name="AssetId" ColumnName="AssetId" />
+                <ScalarProperty Name="AssetEntryID" ColumnName="AssetEntryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAssets">
+            <EntityTypeMapping TypeName="AssetManagementModel.UserAsset">
+              <MappingFragment StoreEntitySet="UserAsset">
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="AssetDetail" ColumnName="AssetDetail" />
+                <ScalarProperty Name="AssetType" ColumnName="AssetType" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserEntryID" ColumnName="UserEntryID" />
+                <ScalarProperty Name="AssetEntryId" ColumnName="AssetEntryId" />
+                <ScalarProperty Name="UserAssetId" ColumnName="UserAssetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserDetails">
+            <EntityTypeMapping TypeName="AssetManagementModel.UserDetail">
+              <MappingFragment StoreEntitySet="UserDetail">
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ReportingTo" ColumnName="ReportingTo" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="CorpId" ColumnName="CorpId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserEntryId" ColumnName="UserEntryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLogins">
+            <EntityTypeMapping TypeName="AssetManagementModel.UserLogin">
+              <MappingFragment StoreEntitySet="UserLogins">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="AssetManagementModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MultipleAttachments">
+            <EntityTypeMapping TypeName="AssetManagementModel.MultipleAttachment">
+              <MappingFragment StoreEntitySet="MultipleAttachment">
+                <ScalarProperty Name="Attachments" ColumnName="Attachments" />
+                <ScalarProperty Name="AssetId" ColumnName="AssetId" />
+                <ScalarProperty Name="serialNO" ColumnName="serialNO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,175 @@
+﻿@model MVC_Asset.Models.AssetDetails
+@{
+    ViewBag.Title = "Create";
+}
+
+
+
+<div class="form-body">
+    @using (Html.BeginForm("Create", "AssetDetail", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        var path = " ";
+
+        @Html.HiddenFor(model => model.AssetEntryID)
+        <div class="form-group">
+            @Html.LabelFor(model => model.AssetId)
+            @Html.TextBoxFor(model => model.AssetId, new { @readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.AssetId)
+        </div>
+
+        <div class="form-group">
+            @*<h3 style="color:white"><b>AssetType:</b></h3>*@
+            @Html.LabelFor(model => model.AssetType)
+            <br>
+            <label>
+                @Html.DropDownListFor(model => model.AssetType, ViewBag.Message as SelectList, "--Select the AssetType--", new { @class = "form-control", id = "gt", onchange = "gg()" })
+            </label>
+
+            @Html.ValidationMessageFor(model => model.AssetId)
+        </div>
+
+
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.AssetNo)
+            @Html.TextBoxFor(model => model.AssetNo, new { @readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.AssetNo)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AssetDescription)
+            @Html.EditorFor(model => model.AssetDescription)
+            @Html.ValidationMessageFor(model => model.AssetDescription)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PurchaseDate)
+            @Html.EditorFor(model => model.PurchaseDate)
+            @Html.ValidationMessageFor(model => model.PurchaseDate)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.WarrantyStartDate)
+            @Html.EditorFor(model => model.WarrantyStartDate)
+            @Html.ValidationMessageFor(model => model.WarrantyStartDate)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.WarrantyEndDate)
+            @Html.EditorFor(model => model.WarrantyEndDate)
+            @Html.ValidationMessageFor(model => model.WarrantyEndDate)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Serial_No)
+            @Html.EditorFor(model => model.Serial_No)
+            @Html.ValidationMessageFor(model => model.Serial_No)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Remarks)
+            @Html.EditorFor(model => model.Remarks)
+            @Html.ValidationMessageFor(model => model.Remarks)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Isdeleted)
+            <br />
+            <div style="display:flex">
+
+                <input type="radio" id="yes" name="Isdeleted" value="Yes" />
+                <label for="yes" style="font-size: large; padding: 10px 1em 0px 8px;"> Yes</label>
+                <input type="radio" id="no" name="Isdeleted" value="No" checked />
+                <label for="no" class="block" style="font-size:large; padding: 10px 1em 0px 8px;">No</label>
+
+            </div>
+            @Html.ValidationMessageFor(model => model.Isdeleted)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Attachment)
+        </div>
+        if (Model.Attachment != null)
+        {
+            path = Convert.ToBase64String(Model.Attachment);
+        }
+        else
+        {
+            path = "";
+        }
+        <div>
+            <h4 style="color:white">Select file to upload:</h4>
+            <input type="file" id="img" name="Attach" value="@path" multiple/>
+        </div>
+
+        <br>
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn button" />
+            <input type="reset" value="Reset" class="btn button" />
+        </div>
+     }
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval");
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script>
+    function gg(e) {
+        var temp;
+        var final;
+        $.ajax({
+            type: "post",
+            url: "/AssetDetail/GetPrefix?AType=" + $('#gt').val(),
+            contentType: "html",
+            success: function (temp) {
+                
+                $('#AssetNo').empty();
+                if (temp.length > 0) {
+                    if (temp[0].AssertPrefix.includes('-')) {
+                        final = (temp[0].AssertPrefix.split("-")[0] + "-" + (Number(temp[0].AssertPrefix.split("-")[1]) + 1));
+
+                        $('#AssetNo').val(final);
+                        $('#AssetId').val(temp[0].AssetId);
+                        console.log(temp[0].AssetId);
+                    }
+                    else {
+                        final = temp[0].AssertPrefix + "-1"
+                        $('#AssetNo').val(final);
+                        $('#AssetId').val(temp[0].AssetId);
+                        console.log(temp[0].AssetId);
+                    }
+                }
+                else {
+                    $('#AssetNo').val('');
+                    $('#AssetId').val('');
+                }
+      
+            }
+        })
+
+        
+    }
+
+    //function getimg() {
+    //    /* console.log(e);*/
+    //    var file = $('#img').val();
+    //    $.ajax({
+    //        type: "post",
+    //        url: "/AssetDetail/GetPrefix?AType=" + file,
+    //        contentType: "html",
+    //        success: function (files) {
+    //            $('#img').empty()
+    //            if (files.length > 0) {
+    //                var final = files[0].Attachment;
+    //                $('#img').val();
+    //            }
+    //            else {
+    //                $('#img').val('');
+    //            }
+    //        }
+    //    }); 
+
+        
+    //}
+</script>
+
+
+
+

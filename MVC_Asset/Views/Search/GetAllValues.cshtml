@@ -1,0 +1,146 @@
+﻿@model PagedList.IPagedList<MVC_Asset.Models.UserAsset>
+@{
+    int intSno = 0;
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+
+<div class="row">
+    <table id="Allvalue" class="table table-bordered">
+        <thead>
+            <tr>
+
+                <th>
+                    S.No
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().AssetType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().AssetDetail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().EndDate)
+                </th>
+                <th colspan="3" style="text-align:center">
+                    Action
+                </th>
+            </tr>
+        </thead>
+        @if (Model.Count() == 0)
+        {
+
+
+            <h2 style="color:red">No Records Found!</h2>
+        }
+        else
+        {
+            intSno = 0;
+
+            foreach (var item in Model)
+            {
+                intSno = intSno + 1;
+
+                <tbody id="Allbody">
+
+                    <tr>
+
+                        <td>
+                            @intSno
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AssetType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AssetDetail)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            <a style="font-size: 12px;" , href="@Url.Action("Edit", "AssignToUser", new { id = item.UserAssetId })" class="btn btn-default"><i class="fa fa-pencil"></i>  Edit</a>
+                        </td>
+
+                        <td>
+                            <a style="font-size: 12px;" , onclick="createpop('@item.AssetDetail')" class="btn btn-default"><i class="fa fa-star"></i>  View</a>
+                        </td>
+                        <td>
+                            <a style="font-size: 12px;" , onclick="unAssignpop(@item.UserAssetId)" class="btn btn-default"><i class="fa fa-unlink"></i>  UnAssign</a>
+                        </td>
+                    </tr>
+                </tbody>
+            }
+
+        }
+
+    </table>
+</div>
+@Html.PagedListPager(Model, i => Url.Action("GetAllValues", "Search", new { i, search = Request.QueryString["search"] }), new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true })
+
+<script type="text/javascript">
+
+    function createpop(AssetDetail) {
+        var x = $("#openpopup");
+        x.load("/Search/Details?AssetDetail=" + AssetDetail, function () {
+            x.dialog({
+                show: {
+                    effect: "blind",
+                    duration: 700
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 500
+                },
+                modal: true,
+                width: 550,
+                height: 600,
+                title: "Asset Detail: ",
+                resizable: false
+            });
+        });
+    }
+</script>
+
+
+<script type="text/javascript">
+
+    function unAssignpop(UserAssetId) {
+        alertify.confirm('Are you sure, You want to Unassign Asset For this Record ?', function (e) {
+            if (e) {
+                var x = $("#openpopup");
+                x.load("/Search/UnAssign?id=" + UserAssetId, function () {
+                    x.dialog({
+                        show: {
+                            effect: "blind",
+                            duration: 700
+                        },
+                        hide: {
+                            effect: "explode",
+                            duration: 500
+                        },
+                        modal: true,
+                        width: 450,
+                        height: 500,
+                        title: "Update Unassign Date for the ID - " + UserAssetId,
+                        resizable: false
+                    });
+                });
+            }
+        });
+
+
+    }
+</script>

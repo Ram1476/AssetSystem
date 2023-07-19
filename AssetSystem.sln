@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetSystem", "AssetSystem\AssetSystem.csproj", "{9BE2CA1F-D491-494B-B457-5E03CABBECCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Asset", "MVC_Asset\MVC_Asset.csproj", "{F4AEC8D3-9054-4F22-A282-6994BCB68DB5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9BE2CA1F-D491-494B-B457-5E03CABBECCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BE2CA1F-D491-494B-B457-5E03CABBECCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BE2CA1F-D491-494B-B457-5E03CABBECCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BE2CA1F-D491-494B-B457-5E03CABBECCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4AEC8D3-9054-4F22-A282-6994BCB68DB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4AEC8D3-9054-4F22-A282-6994BCB68DB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4AEC8D3-9054-4F22-A282-6994BCB68DB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4AEC8D3-9054-4F22-A282-6994BCB68DB5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6B80D4B8-D559-4915-BB74-B626C94F2CAE}
+	EndGlobalSection
+EndGlobal

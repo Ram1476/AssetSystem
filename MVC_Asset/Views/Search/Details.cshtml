@@ -1,0 +1,67 @@
+﻿@model MVC_Asset.Models.AssetDetail
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
+
+
+@{
+    ViewBag.Title = "Details";
+    string imgsrc;
+    //string path;
+}
+
+
+
+<h2>Details</h2>
+
+@if (Model != null)
+{
+    <div>
+
+
+        <h4>AssetDetail</h4>
+        AssetType        :    @Html.DisplayFor(model => model.AssetType)
+        <br />
+        AssetNo          :    @Html.DisplayFor(model => model.AssetNo)
+        <br />
+        AssetDescription :    @Html.DisplayFor(model => model.AssetDescription)
+        <br />
+        PurchaseDate     :    @Html.DisplayFor(model => model.PurchaseDate)
+        <br />
+        WarrantyStartDate:    @Html.DisplayFor(model => model.WarrantyStartDate)
+        <br />
+        WarranttyEndDate :    @Html.DisplayFor(model => model.WarrantyEndDate)
+        <br />
+        Serial_No        :    @Html.DisplayFor(model => model.Serial_No)
+        <br />
+        Remarks          :    @Html.DisplayFor(model => model.Remarks)
+        <br />
+        IsDeleted        :    @Html.DisplayFor(model => model.Isdeleted)
+        <br /><br />
+        @if (Model.Attachment != null)
+        {
+
+            imgsrc = @Url.Content(Model.ImagePath);
+        }
+        else
+        {
+            imgsrc = null;
+        }
+        Attachment:    <img src = "@imgsrc" width = "80" height = "80" />
+
+
+    </div>
+
+}
+else
+{
+    <h2>"No Data Available to Display"</h2>
+}
+
+
+<!--<p>-->
+@*@Html.ActionLink("Edit", "Edit", new { id = Model.AssetEntryID }) |*@
+<!--@Html.ActionLink("Back to List", "Index")
+</p>-->

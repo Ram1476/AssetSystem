@@ -1,0 +1,152 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+
+@model IPagedList<MVC_Asset.Models.AddUsers>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int intSno = 0;
+}
+
+
+
+<h2>User-Informations</h2>
+<h3>Welcome @User.Identity.Name - @ViewBag.Role</h3>
+<br />
+
+    <p style="position:relative; top:40px;">
+        <a href="@Url.Action("Create","UserEntry")" class=" btn btn-default"><i class="fa fa-plus"></i>  Create New</a>
+    </p>
+
+    <p style="position:relative; left:1000px;">
+        <a href="@Url.Action("Search","UserEntry")" class=" btn btn-default"><i class="fa fa-search"></i>  Search</a>
+    </p>
+
+
+
+
+
+<table class="table table-striped">
+    <thead class="table-heading">
+        <tr>
+            <th>
+                S.No
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().CorpId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().EmployeeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().EmailAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().ReportingTo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Remarks)
+            </th>
+            <th colspan="2" style="text-align:center">Actions</th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        intSno = intSno + 1;
+        <tr>
+            <td>
+                @intSno
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CorpId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReportingTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remarks)
+            </td>
+            <td>
+                <a style="font-size: 12px;" , href="@Url.Action("Edit","UserEntry",new {id = item.UserEntryId})" class="btn btn-default"><i class="fa fa-pencil"></i>  Edit</a>
+            </td>
+            <td>
+                <a style="font-size: 12px;" , onclick="Delete(@item.UserEntryId)" class="btn btn-default"><i class="fa fa-trash"></i>  Delete</a>
+            </td>
+        </tr>
+    }
+</table>
+@Html.PagedListPager(Model, i => Url.Action("Index", "UserEntry", new { i, search = Request.QueryString["search"] }))
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/alertify.min.js"></script>
+
+
+<script>
+
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]'
+            if (successMessage != '') {
+                alertify.success(successMessage);
+            }
+        });         function Delete(id) {
+            alertify.confirm('Asset Tracking System', 'Are you sure, You want to Delete this Record ?', function () {
+                window.location.href = '@Url.Action("Delete", "UserEntry")/' + id;
+            },null );
+        }
+</script>
+
+
+<script type="text/javascript">
+
+      function Delete(id) {
+          alertify.confirm('ASSET TRACKING SYSTEM', 'Are you sure, You want to delete this User?', function (e) {
+              if (e) {
+                  $.ajax({
+                      type: "GET",
+                      url: "/UserEntry/Delete?id=" + id,
+                      contentType: "Json",
+                      success: function (response) {
+                          if (response == "1") {
+                              alertify.alert("Error Deleting", "User Status is Not Active, Cannot delete User");
+                          }
+                          else if (response == "2") {
+                              alertify.alert("Error Deleting", "User is assigned to an Asset, Cannot delete User");
+                          }
+                          else {
+                              window.location.href = '@Url.Action("Deleted", "UserEntry")/' + id;
+                          }
+                      }
+
+                  });
+              }
+          }, null);
+      }
+
+
+</script>

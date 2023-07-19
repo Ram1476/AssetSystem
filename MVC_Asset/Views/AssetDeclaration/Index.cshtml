@@ -1,0 +1,78 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+
+
+@model IPagedList<MVC_Asset.Models.AssetDeclaration>
+@{
+    ViewBag.Title = "Index";
+    int intSno = 0;
+}
+
+<h3>Welcome @User.Identity.Name - @ViewBag.Role</h3>
+<br />
+
+<p>
+    <a href="@Url.Action("Create","AssetDeclaration")" class=" btn btn-default"><i class="fa fa-plus "></i> Create New</a>
+</p>
+@if (Model != null)
+{
+
+    <table class="table table-striped">
+        <thead class="table-heading">
+            <tr>
+                <th>
+                    S.No
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().AssertType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().AssertPrefix)
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+        intSno = intSno + 1;
+        <tr>
+            <td>
+                @intSno
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssertType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssertPrefix)
+            </td>
+            <td>
+                <a href="@Url.Action("Edit", "AssetDeclaration", new { id = item.AssetId })" class="btn btn-default"><i class="fa fa-pencil"></i>  Edit</a>
+                <a onclick="Delete(@item.AssetId)" class="btn btn-default"><i class="fa fa-trash"></i>  Delete</a>
+            </td>
+        </tr>
+        }
+
+    </table>
+    @Html.PagedListPager(Model, i => Url.Action("Index", "AssetDeclaration", new { i, search = Request.QueryString["search"] }))
+}
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval");
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script>
+
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]'
+            if (successMessage != '') {
+                alertify.success(successMessage);
+            }
+        });         function Delete(id) {
+            alertify.confirm('Asset Tracking System', 'Are you sure, You want to Delete this Record ?', function () {
+                window.location.href = '@Url.Action("Delete", "AssetDeclaration")/' + id;
+            },null );
+        }
+</script>
+

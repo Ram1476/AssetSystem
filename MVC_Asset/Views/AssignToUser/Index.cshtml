@@ -1,0 +1,115 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+
+@model IPagedList<MVC_Asset.Controllers.AssignAsset>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int intSno = 0;
+}
+
+
+<h2>UserAsset Assign</h2>
+<h3>Welcome @User.Identity.Name - @ViewBag.Role</h3>
+<br />
+<p>
+    <a href="@Url.Action("Create","AssignToUser")" class=" btn btn-default"><i class="fa fa-plus"></i>  Create New</a>
+</p>
+<table class="table table-striped">
+    <thead class="table-heading">
+        <tr>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.AssetEntryId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserEntryID)
+                </th>*@
+            <th>
+                S.No
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().AssetType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().AssetDetail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Remarks)
+            </th>
+            <th colspan="2" style="text-align:center">Actions</th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        intSno = intSno + 1;
+        <tr>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.AssetEntryId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserEntryID)
+                </td>*@
+
+            <td>
+                @intSno
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssetType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssetDetail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remarks)
+            </td>
+            <td>
+                <a style="font-size: 12px;" , href="@Url.Action("Edit","AssignToUser",new {id = item.UserAssetId})" class="btn btn-default"><i class="fa fa-pencil"></i>  Edit</a>
+            </td>
+            <td>
+                <a style="font-size: 12px;" , onclick="Delete(@item.UserAssetId)" class="btn btn-default"><i class="fa fa-trash"></i>  Delete</a>
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.PagedListPager(Model, i => Url.Action("Index", "AssignToUser", new { i, search = Request.QueryString["search"] }))
+
+<script src="~/Scripts/alertify.min.js"></script>
+
+<script>
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]'
+            if (successMessage != '') {
+                alertify.successMessage();
+            }
+        });         function Delete(id) {
+            alertify.confirm('Asset Tracking System', 'Are you sure, You want to Delete this Record ?', function () {
+                window.location.href = '@Url.Action("Delete", "AssignToUser")/' + id;
+            },null );
+        }
+
+</script>
+
+
+
+

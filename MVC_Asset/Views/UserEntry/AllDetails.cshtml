@@ -1,0 +1,33 @@
+﻿@model MVC_Asset.Models.UserDetail
+@{
+    ViewBag.Title = "AlllDetails";
+}
+
+<h2>User Details</h2>
+
+@if (Model != null)
+{
+    <div>
+        FirstName  : @Html.DisplayFor(model => model.FirstName)
+        <br />
+        LastName   : @Html.DisplayFor(model => model.LastName)
+        <br />
+        CorpId     : @Html.DisplayFor(model => model.CorpId)
+        <br />
+        EmployeeId : @Html.DisplayFor(model => model.EmployeeId)
+        <br />
+        EmailAddress : @Html.DisplayFor(model => model.EmailAddress)
+        <br />
+        ReportingTo   : @Html.DisplayFor(model => model.ReportingTo)
+        <br />
+        IsActive  : @Html.DisplayFor(model => model.IsActive)
+        <br />
+        Remarks    : @Html.DisplayFor(model => model.Remarks)
+
+    </div>
+}
+else
+{
+    <h2 style="color:red">"No Data Available To Display"</h2>
+}
+

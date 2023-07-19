@@ -1,0 +1,553 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+
+@model IPagedList<MVC_Asset.Models.UserAsset>
+
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>*@
+
+
+@{
+    ViewBag.Title = "Index";
+    int intSno;
+}
+
+
+<h2>Search Page</h2>
+<h3>Welcome @User.Identity.Name - @ViewBag.Role</h3>
+
+
+<select id="selectedValue" name="selectedValue" class="form-control" style="width:fit-content">
+    <option value="">--Select Your Search by Option--</option>
+    <option value="AssetNo">AssetNo</option>
+    <option value="User">User</option>
+</select>
+
+@*@using (Html.BeginForm("Index", "Search", FormMethod.Get))*@
+
+
+<br />
+<br />
+<label><input id="search" style="color: #333333 ; font-size:18px" name="search" type="text" value="" placeholder="Enter Your Search Value...." /></label>
+<label><input type="submit" class="btn btn-default" style="background-color: #2a3843 ; color:azure" id="searchBtn" value="Search" /><i class="fa fa-search"></i></label>
+@*<label style="color:black"> | </label>
+    <label style="font-size:18px" id="ViewAll">@Html.ActionLink("View All", "Index", "Search")</label>*@
+
+<br />
+<br />
+
+
+
+
+
+<table id="Asset" class="table table-bordered" style="display:none">
+    <thead>
+        <tr>
+
+            <th>
+                S.No
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().EndDate)
+            </th>
+            <th colspan="2" style="text-align:center">
+                Action
+            </th>
+
+        </tr>
+    </thead>
+
+    @if (Model.Count() == 0)
+    {
+
+
+        <h2 style="color:red">No Records Found!</h2>
+    }
+    else
+    {
+        intSno = 0;
+
+        foreach (var item in Model)
+        {
+
+
+            intSno = intSno + 1;
+            <tbody id="AssetBody">
+                <tr>
+                    <td>
+                        @intSno
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+
+                    <td>
+                        <a style="font-size: 12px;" , onclick="createpop('@item.AssetDetail')" class="btn btn-default"><i class="fa fa-star"></i>  View</a>
+                    </td>
+                    <td>
+                        <a style="font-size: 12px;" , onclick="unAssignpop(@item.UserAssetId)" class="btn btn-default"><i class="fa fa-unlink"></i>  UnAssign</a>
+                    </td>
+                </tr>
+            </tbody>
+        }
+
+    }
+
+</table>
+
+
+
+
+<table id="User" class="table table-bordered" style="display:none">
+    <thead>
+        <tr>
+
+            <th>
+                S.No
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().AssetType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().AssetDetail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().EndDate)
+            </th>
+            <th colspan="2" style="text-align:center">
+                Action
+            </th>
+        </tr>
+    </thead>
+    @if (Model.Count() == 0)
+    {
+
+
+        <h2 style="color:red">No Records Found!</h2>
+    }
+    else
+    {
+        intSno = 0;
+
+        foreach (var item in Model)
+        {
+            intSno = intSno + 1;
+
+            <tbody id="UserBody">
+
+                <tr>
+
+                    <td>
+                        @intSno
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AssetType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AssetDetail)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    
+                    <td>
+                        <a style="font-size: 12px;" , onclick="createpop('@item.AssetDetail')" class="btn btn-default"><i class="fa fa-star"></i>  View</a>
+                    </td>
+                    <td>
+                        <a style="font-size: 12px;" , onclick="unAssignpop(@item.UserAssetId)" class="btn btn-default"><i class="fa fa-unlink"></i>  UnAssign</a>
+                    </td>
+
+                </tr>
+            </tbody>
+        }
+
+    }
+
+</table>
+@Html.PagedListPager(Model, i => Url.Action("Index", "Search", new { i, search = Request.QueryString["search"] }), new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true })
+
+
+
+
+
+
+<div id="openpopup" style="display:none"></div>
+<div id="Unassignpop" style="display:none"></div>
+
+@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.8.0.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.22/jquery-ui.js"></script>
+<link rel="Stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/redmond/jquery-ui.css" />
+
+
+<script>
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]'
+            if (successMessage != '') {
+                alertify.show(successMessage);
+            }
+        });         function Delete(id) {
+            alertify.confirm('Asset Tracking System', 'Are you sure, You want to Unassign Asset For this Record ?', function () {
+                window.location.href = '@Url.Action("UnAssign", "Search")/' + id;
+            },null );
+    }
+
+
+
+</script>
+
+<script>
+
+    function Edit(UserAssetId) {
+        window.location.href = '@Url.Action("Edit", "AssignToUser")/' + UserAssetId;
+    }
+</script>
+
+<script>
+    function displayValue() {
+        var selected = $("#selectedValue").val();
+        if ($("#selectedValue").val() == "AssetNo") {
+            $("#Asset").show();
+            $("#User").hide();
+        }
+        else if ($("#selectedValue").val() == "User") {
+            $("#Asset").hide();
+            $("#User").show();
+        }
+
+    };
+</script>
+
+@*<script>
+        $("#searchBtn").click(function () {
+            if ($("#selectedValue").val() == "AssetNo") {
+                $("#Asset").show();
+                $("#User").hide();
+            }
+            else if ($("#selectedValue").val() == "User") {
+                $("#Asset").hide();
+                $("#User").show();
+            }
+
+        });
+    </script>*@
+<script type="text/javascript">
+    var createDialog = $("#openpopup");
+    createDialog.dialog({
+        autoOpen: false,
+        show: {
+            effect: "blind",
+            duration: 700
+        },
+        hide: {
+            effect: "explode",
+            duration: 500
+        },
+        modal: true,
+        width: 450,
+        height: 400,
+        title: "Asset Detail: ",
+        resizable: true
+    });
+    function createpop(AssetDetail) {
+        createDialog.load("/Search/Details?AssetDetail=" + AssetDetail, function () {
+            createDialog.dialog("open");
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    var unAssignDialog = $("#Unassignpop");
+
+    function unAssignpop(UserAssetId) {
+        var dialogOptions = unAssignDialog.dialog({
+            autoOpen: false,
+            show: {
+                effect: "blind",
+                duration: 700
+            },
+            hide: {
+                effect: "explode",
+                duration: 500
+            },
+            modal: true,
+            width: 450,
+            height: 500,
+            title: "Update Unassign Date for the ID - "+UserAssetId,
+            resizable: false
+        });
+        alertify.confirm('Asset Tracking System', 'Are you sure, You want to Unassign Asset For this Record ?', function (e) {
+            if (e) {
+                unAssignDialog.load("/Search/UnAssign?id=" + UserAssetId, function () {
+                    //dialogOptions.title = "Update Unassign Date for the ID - " + UserAssetId;
+                    dialogOptions.dialog("open");
+                });
+            }
+        }, null);
+    }
+</script>
+
+
+<script>
+
+    $(document).ready(function () {
+        $("#selectedValue").change(function () {
+            $("#search").val('');
+        });
+    });
+    $(function () {
+
+        $("#search").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Search/getname?search=" + request.term + "&searchby=" + $("#selectedValue").val(),
+                    /*data: "{'search':'" + request.term +"}",*/
+                    datatype: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=uf-8",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return item
+                        }))
+                    },
+                });
+            },
+            minLength: 1
+        });
+
+    });
+</script>
+
+<script>
+
+</script>
+<script>
+    $(document).ready(function () {
+        $("#searchBtn").click(function () {
+            var searchBy = $("#selectedValue").val();
+            var SearchValue = $("#search").val();
+            var SetData = $("#AssetBody");
+            var SetValue = $("#UserBody");
+            var SetAllValue = $("#Allbody");
+            SetData.html("");
+            $.ajax({
+                type: "post",
+                url: "/Search/GetSearchingData?searchBy=" + searchBy + "&searchValue=" + SearchValue,
+                contentType: "html",
+                success: function (result) {
+                    $("#AssetBody").empty();
+                    if (searchBy == "AssetNo" && SearchValue != "") {
+                        if (result.length == 0) {
+                            console.log("Asset w/o value");
+                            SetData.append('<tr style="color:red"><td colspan="3">No Match Found</td></tr>');
+                            $("#Asset").show();
+                            $("#User").hide();
+                        }
+                        else {
+                            console.log("Asset w value");
+                            var searchId
+                            var i = 0
+                            $.each(result, function (index, value) {
+                                if (value != 0 && value != null) {
+                                    i += 1
+
+                                    var Data = "<tr>" +
+                                        "<td>" + i + "</td>" +
+                                        "<td>" + value.UserName + "</td>" +
+                                        "<td>" + (value.StartDate) + "</td>" +
+                                        "<td>" + (value.EndDate) + "</td>" +
+                                        "<td>" +
+                                        '<a style="font-size: 12px;" , onclick="createpop(' + "'" + value.AssetDetail + "'" + ')" class="btn btn-default"><i class="fa fa-star"></i>  View</a>' +
+                                        "</td>" +
+                                        "<td>" +
+                                        '<a style="font-size: 12px;", onclick="unAssignpop(' + value.UserAssetId + ')" class="btn btn-default"><i class="fa fa-unlink"></i>  UnAssign</a>' +
+                                        "</td>" +
+                                        "</tr>";
+
+                                    SetData.append(Data);
+
+                                }
+
+                            });
+                            $("#Asset").show();
+                            $("#User").hide();
+                        }
+                    }
+                    else if (searchBy == "User" && SearchValue != "") {
+                        console.log('User');
+                        $("#UserBody").empty();
+                        if (result.length == 0) {
+                            console.log("User w/o value");
+                            SetValue.append('<tr style="color:red"><td colspan="4">No Match Found</td></tr>');
+                            $("#User").show();
+                            $("#Asset").hide();
+
+                        }
+                        else {
+                            console.log('User With Value');
+                            var i = 0
+                            $.each(result, function (index, value) {
+                                i += 1;
+                                if (value != 0 && value != null) {
+                                    var Data = "<tr>" +
+                                        "<td>" + i + "</td>" +
+                                        "<td>" + value.AssetType + "</td>" +
+                                        "<td>" + value.AssetDetail + "</td>" +
+                                        "<td>" + value.StartDate + "</td>" +
+                                        "<td>" + value.EndDate + "</td>" +
+                                        "<td>" +
+                                        '<a style="font-size: 12px;" , onclick="createpop(' + "'" + value.AssetDetail + "'" + ')" class="btn btn-default"><i class="fa fa-star"></i>  View</a>' +
+                                        "</td>" +
+                                        "<td>" +
+                                        '<a style="font-size: 12px;", onclick="unAssignpop(' + value.UserAssetId + ')" class="btn btn-default"><i class="fa fa-unlink"></i>  UnAssign</a>' +
+                                        "</td>" +
+                                        "</tr>";
+                                    SetValue.append(Data);
+                                }
+                            });
+                            $("#User").show();
+                            $("#Asset").hide();
+                        }
+                    }
+                    else {
+                        console.log("All Values");
+                        $("#User").hide();
+                        $("#Asset").hide();
+                        if (searchBy == "User" || searchBy == "AssetNo") {
+
+                            alertify.alert('Invalid Search', 'Please Enter a value to search');
+                            /*alert("Please Enter a value to search");*/
+                        }
+                        else {
+
+                            alertify.alert('Invalid Search', 'Please Select an Option to search');
+                            /*alert("Please Select an Option to search");*/
+                        }
+
+                        //if (result.length == 0) {
+
+                        //    SetAllValue.append('<tr style="color:red"><td colspan="">No Match Found</td></tr>');
+                        //    $("#Allvalue").show();
+                        //    $("#Asset").hide();
+                        //    $("#User").hide();
+                        //}
+                        //else {
+                        //console.log('All w values');
+                        //var i = 0
+                        //$.each(result, function (index, value) {
+                        //    i += 1;
+                        //    if (value != 0 && value != null) {
+                        //        var Data = "<tr>" +
+                        //            "<td>" + i + "</td>" +
+                        //            "<td>" + value.UserName + "</td>" +
+                        //            "<td>" + value.AssetType + "</td>" +
+                        //            "<td>" + value.AssetDetail + "</td>" +
+                        //            "<td>" + value.StartDate + "</td>" +
+                        //            "<td>" + value.EndDate + "</td>" +
+                        //            "<td>" +
+                        //            '<a style="font-size: 12px" class="btn btn-default"><i class="fa fa-pencil"></i>  Edit</a>' +
+                        //            "</td>" +
+                        //            "<td>" +
+                        //            '<a style="font-size: 12px" class="btn btn-default"><i class="fa fa-star"></i>  View</a>' +
+                        //            "</td>" +
+                        //            "<td>" +
+                        //            '<a style="font-size: 12px;" class="btn btn-default"><i class="fa fa-unlink"></i>  UnAssign</a>' +
+                        //            "</td>" +
+                        //            "</tr>"
+
+                        //        SetAllValue.append(Data);
+                        //    }
+
+                        //});
+                        //$("#Allvalue").show();
+                        //$("#Asset").hide();
+                        //$("#User").hide();
+
+                        //$.ajax({
+
+                        //    type: "GET",
+                        //    url: "/Search/GetAllValues/",
+                        //    success: function (response) {
+                        //        $('#Allvalue').empty();
+                        //        $('#Allvalue').html(response);
+                        //    },
+                        //    failure: function (response) {
+                        //        alert(response.responseText);
+                        //    },
+                        //    error: function (response) {
+                        //        alert(response.responseText);
+                        //    }
+                        //});
+                    }
+
+                }
+            });
+        });
+    });
+</script>
+
+
+
+@*<script>
+        $("#ViewAll").click(function () {
+            if ($("#selectedValue").val() == "AssetNo") {
+                $("#Asset").show();
+                $("#User").hide();
+            }
+            else if ($("#selectedValue").val() == "User") {
+                $("#Asset").hide();
+                $("#User").show();
+            }
+
+        });
+    </script>*@
+
+
+@*<script>
+        $(document).ready(function () {
+
+            $("#selectedValue").change(function () {
+                var value = $("#selectedValue").val();
+                if ($("#selectedValue").val() == "AssetNo") {
+                    $("#Asset").show();
+                    $("#User").hide();
+                }
+                else if ($("#selectedValue").val() == "User") {
+                    $("#Asset").hide();
+                    $("#User").show();
+                }
+                else {
+                    $("#Asset").hide();
+                    $("#User").hide();
+                }
+
+            });
+
+        });
+    </script>*@
+
+
+
+
+
+
+

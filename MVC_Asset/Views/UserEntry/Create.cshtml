@@ -1,0 +1,101 @@
+﻿@model MVC_Asset.Models.AddUsers
+
+@{
+    ViewBag.Title = "Create";
+
+}
+
+<h2>Add New User</h2>
+<div class="form-body">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+
+                @Html.LabelFor(model => model.FirstName)
+                @Html.EditorFor(model => model.FirstName)
+                @Html.ValidationMessageFor(model => model.FirstName)
+            </div>
+
+            <div class="form-group">
+
+                @Html.LabelFor(model => model.LastName)
+                @Html.EditorFor(model => model.LastName)
+                @Html.ValidationMessageFor(model => model.LastName)
+
+            </div>
+
+            <div class="form-group">
+
+                @Html.LabelFor(model => model.CorpId)
+                @Html.EditorFor(model => model.CorpId)
+                @Html.ValidationMessageFor(model => model.CorpId)
+
+            </div>
+
+            <div class="form-group">
+
+                @Html.LabelFor(model => model.EmployeeId)
+                @Html.EditorFor(model => model.EmployeeId)
+                @Html.ValidationMessageFor(model => model.EmployeeId)
+
+            </div>
+
+            <div class="form-group">
+
+                @Html.LabelFor(model => model.EmailAddress)
+                @Html.EditorFor(model => model.EmailAddress)
+                @Html.ValidationMessageFor(model => model.EmailAddress)
+
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReportingTo)
+                @Html.DropDownListFor(model => model.ReportingTo, ViewBag.Users as SelectList, "--Reporting to--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ReportingTo)
+
+            </div>
+
+            <div class="form-group">
+
+                @Html.LabelFor(model => model.IsActive)
+                <br />
+                <div style="display:flex">
+
+                    <input type="radio" id="yes" name="IsActive" value="Yes" />
+                    <label for="yes" style="font-size: large; padding: 10px 1em 0px 8px;"> Yes</label>
+                    <input type="radio" id="no" name="IsActive" value="No" checked />
+                    <label for="no" class="block" style="font-size: large; padding: 10px 1em 0px 8px;">No</label>
+
+                </div>
+                @Html.ValidationMessageFor(model => model.IsActive)
+
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Remarks)
+                @Html.EditorFor(model => model.Remarks)
+                @Html.ValidationMessageFor(model => model.Remarks)
+
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn button" />
+                <input type="reset" value="Reset" class="btn button" />
+            </div>
+        </div>
+    }
+
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval");
+}
+

@@ -1,0 +1,56 @@
+﻿
+@model MVC_Asset.Controllers.AssignAsset
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>*@
+
+<h2>Edit</h2>
+
+<div class="form-body">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.UserAssetId)
+    @Html.HiddenFor(model => model.AssetEntryId)
+    @Html.HiddenFor(model => model.UserEntryID)
+    @Html.HiddenFor(model => model.UserName)
+    @Html.HiddenFor(model => model.AssetType)
+    @Html.HiddenFor(model => model.AssetDetail)
+    @Html.HiddenFor(model => model.StartDate)
+    @Html.HiddenFor(model => model.Remarks)
+
+
+    @Html.LabelFor(model => model.EndDate)
+    @Html.EditorFor(model => model.EndDate)
+    @Html.ValidationMessageFor(model => model.EndDate)
+
+    <br />
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-default" onclick="AssignUpdate()" />
+    </div>
+
+</div>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+
+<script>
+    function AssignUpdate() {
+        var UserAssetId = $("#UserAssetId").val();
+        var AssetEntryId = $("#AssetEntryId").val();
+        var UserEntryID = $("#UserEntryID").val();
+        var UserName = $("#UserName").val();
+        var AssetType = $("#AssetType").val();
+        var AssetDetail = $("#AssetDetail").val();
+        var StartDate = $("#StartDate").val();
+        var EndDate = $("#EndDate").val();
+        var Remarks = $("#Remarks").val();
+
+        var updatedUserassign = { "UserAssetId": UserAssetId, "AssetEntryId": AssetEntryId, "UserEntryID": UserEntryID, "UserName": UserName, "AssetType": AssetType, "AssetDetail": AssetDetail, "StartDate": StartDate, "EndDate": EndDate, "Remarks": Remarks }
+        $.post('/Search/UnAssign', updatedUserassign, function (data) { if (data == 0) { loaction: location.href; } }, 'json');
+        alert("Record UnAssigned Successfully for - " + UserAssetId);
+    }
+</script>
+
+
+
+
+

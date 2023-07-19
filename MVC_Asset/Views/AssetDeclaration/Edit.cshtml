@@ -1,0 +1,43 @@
+﻿@model MVC_Asset.Models.AssetTypes
+@{
+    ViewBag.Title = "Edit";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div class="form-body">
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+
+        @Html.HiddenFor(model => model.AssetId)
+        <div class="form-group">
+            @Html.LabelFor(model => model.AssertType)
+            @Html.EditorFor(model => model.AssertType)
+            @Html.ValidationMessageFor(model => model.AssertType)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.AssertPrefix)
+            @Html.EditorFor(model => model.AssertPrefix)
+            @Html.ValidationMessageFor(model => model.AssertPrefix)
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn button" />
+            <input type="reset" value="Reset" class="btn button" />
+        </div>
+    }
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,114 @@
+﻿@model IEnumerable<MVC_Asset.Models.UserDetail>
+    @{ 
+        ViewBag.Title = "SearchResult";
+        int intSno = 0;
+    }
+
+
+<div>
+    <table class="table table-striped">
+        <thead class="table-heading">
+            <tr>
+                <th>
+                    S.No
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().CorpId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().EmployeeId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().EmailAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().ReportingTo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().IsActive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Remarks)
+                </th>
+                <th colspan="2" style="text-align:center">Actions</th>
+            </tr>
+        </thead>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                intSno = intSno + 1;
+                <tr>
+                    <td>
+                        @intSno
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CorpId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmailAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportingTo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remarks)
+                    </td>
+                    <td>
+                        <a style="font-size: 12px;" , href="@Url.Action("Edit","UserEntry",new {id = item.UserEntryId})" class="btn btn-default"><i class="fa fa-pencil"></i>  Edit</a>
+                    </td>
+                    <td>
+                        <a style="font-size: 12px;" , onclick="viewUser(@item.UserEntryId)" class="btn btn-default"><i class="fa fa-eye"></i>  View</a>
+                    </td>
+                </tr>
+
+
+            }
+        }
+    </table>
+</div>
+<div id="openpopup" style="display:none"></div>
+
+
+
+<script type="text/javascript">
+
+    function viewUser(AssetDetail) {
+        var x = $("#openpopup");
+        x.load("/UserEntry/AllDetails?id=" + AssetDetail, function () {
+            x.dialog({
+                show: {
+                    effect: "blind",
+                    duration: 700
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 500
+                },
+                modal: true,
+                width: 350,
+                height: 400,
+                title: "User Detail: ",
+                resizable: false
+            });
+        });
+    }
+</script>

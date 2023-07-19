@@ -1,0 +1,40 @@
+﻿@model IEnumerable<MVC_Asset.Models.AssetTypes>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<br/>
+
+<p>
+   <a href="@Url.Action("AddorEdit","AssetDeclaration")" class=" btn btn-default"><i class="fa fa-plus "></i> Create New</a>
+</p>
+<table class="table table-striped">
+    <thead style=" background-color:steelblue": class="table-heading">
+        <tr>
+            <th style="color:azure">
+                @Html.DisplayNameFor(model => model.AssertType)
+            </th>
+            <th style="color:azure">
+                @Html.DisplayNameFor(model => model.AssertPrefix)
+            </th>
+            <th style="color:azure">Actions</th>
+        </tr>
+    </thead>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssertType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssertPrefix)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

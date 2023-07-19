@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/_LayoutPage1.cshtml";
+}
+
+
+<body>
+    <div class="container demo-1">
+        <div class="content">
+            <div id="large-header" class="large-header">
+                <h1>Asset Tracking System</h1>
+                <div class="main-agileits">
+                    <!--form-stars-here-->
+                    <div class="form-w3-agile">
+                        <h2>login Now</h2>
+                        <form action="/userlogin/Verify" method="post">
+                            <div class="form-sub-w3">
+                                <input type="text" name="Name" placeholder="Username " required="" />
+                                <div class="icon-w3">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            <div class="form-sub-w3">
+                                <input type="password" name="Password" placeholder="Password" required="" />
+                                <div class="icon-w3">
+                                    <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            @*<p class="p-bottom-w3ls">Forgot Password?<a class href="#">  Click here</a></p>*@
+                            @*<p class="p-bottom-w3ls1">New User?<a class href="#">  Register here</a></p>*@
+                            <div class="clear"></div>
+                            <div class="submit-w3l">
+                                <input type="submit" value="Login">
+                            </div>
+                        </form>
+                        <br />
+                        @if (Convert.ToInt32(TempData["users"]) == 0)
+                        {
+                            <div>
+                                <h3 style="color:red">@TempData["Message"]</h3>
+                            </div>
+                        }
+                        @*<div class="social w3layouts">
+                                <div class="heading">
+                                    <h5>Or Login with</h5>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="icons">
+                                    <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a>
+                                    <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>*@
+                    </div>
+                    <!--//form-ends-here-->
+                </div><!-- copyright -->
+                <br /><br /><br /><br /><br /><br /><br /><br />
+                <div class="copyright w3-agile">
+                    <p> Asset Tracking System</p>
+                </div>
+                <!-- //copyright -->
+            </div>
+        </div>
+    </div>
+</body>
+
+
+
+   
