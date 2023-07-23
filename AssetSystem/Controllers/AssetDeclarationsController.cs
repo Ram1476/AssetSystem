@@ -10,9 +10,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using AssetSystem.Models;
 using AssetSystem.Classes;
+using System.Web.Http.Cors;
 
 namespace AssetSystem.Controllers
 {
+    [EnableCors(origins: "http://localhost:3000", headers:"*",methods:"*")]
     public class AssetDeclarationsController : ApiController
     {
         private AssetDBEntities db = new AssetDBEntities();
