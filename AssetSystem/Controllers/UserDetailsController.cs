@@ -13,7 +13,7 @@ using AssetSystem.Models;
 
 namespace AssetSystem.Controllers
 {
-    [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
+    [EnableCors(origins: "http://localhost:8000", headers: "*", methods: "*")]
     public class UserDetailsController : ApiController
     {
         private AssetDBEntities db = new AssetDBEntities();
