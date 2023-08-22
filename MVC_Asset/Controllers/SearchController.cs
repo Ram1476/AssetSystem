@@ -216,9 +216,10 @@ namespace MVC_Asset.Controllers
                     {
                         binaryFormat.Serialize(memoryStream, reader["Attachment"]);
 
-                        assetDetail.Attachment = memoryStream.ToArray();
-
-                        assetDetail.ImagePath = Encoding.ASCII.GetString(memoryStream.ToArray());
+                        //assetDetail.Attachment = memoryStream.ToArray();
+                        //reader["Attachment"].ToString();
+                        // assetDetail.ImagePath = Encoding.ASCII.GetString(memoryStream.ToArray());
+                         assetDetail.Attachment = reader["Attachment"].ToString();
 
                     }
 
@@ -228,7 +229,7 @@ namespace MVC_Asset.Controllers
                 value = db.AssetDetails.Where(x => x.AssetNo == AssetDetail).ToList();
                 if (value.Count() != 0)
                 {
-                    assetDetail.ImagePath = Encoding.ASCII.GetString(value[0].Attachment);
+                    assetDetail.Attachment = value[0].Attachment;
                 }
                 return PartialView(assetDetail);
             }

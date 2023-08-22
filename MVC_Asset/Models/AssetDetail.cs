@@ -11,7 +11,6 @@ namespace MVC_Asset.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     public partial class AssetDetail
@@ -28,29 +27,17 @@ namespace MVC_Asset.Models
         public string AssetType { get; set; }
         public string AssetNo { get; set; }
         public string AssetDescription { get; set; }
-
-        [Required]
-        [DataType(DataType.Date, ErrorMessage = "Date only")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> PurchaseDate { get; set; }
-
-        [Required]
-        [DataType(DataType.Date, ErrorMessage = "Date only")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> WarrantyStartDate { get; set; }
-
-        [Required]
-        [DataType(DataType.Date, ErrorMessage = "Date only")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> WarrantyEndDate { get; set; }
         public string Serial_No { get; set; }
         public string Remarks { get; set; }
         public string Isdeleted { get; set; }
-        public byte[] Attachment { get; set; }
-        
+        public string Attachment { get; set; }
+
         [NotMapped]
         public string ImagePath { get; set; }
-    
+
         public virtual AssetDeclaration AssetDeclaration { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAsset> UserAssets { get; set; }

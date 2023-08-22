@@ -11,9 +11,7 @@ namespace MVC_Asset.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
-
+    
     public partial class AssetDeclaration
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,13 +21,7 @@ namespace MVC_Asset.Models
         }
     
         public int AssetId { get; set; }
-
-        [Required]
-        [Remote("IsUserExists", "AssetDeclaration", ErrorMessage = "AssertType value already  exist - Please Provide a New Input")]
         public string AssertType { get; set; }
-
-        [Required]
-        [Remote("IsPrefixExists", "AssetDeclaration", ErrorMessage = "AssertPrefix value already  exist - Please Provide a New Input")]
         public string AssertPrefix { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

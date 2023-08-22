@@ -11,30 +11,16 @@ namespace MVC_Asset.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public partial class UserAsset
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserAssetId { get; set; }
         public Nullable<int> AssetEntryId { get; set; }
         public Nullable<int> UserEntryID { get; set; }
-
-        [Required]
         public string UserName { get; set; }
-        [Required]
         public string AssetType { get; set; }
-        
         public string AssetDetail { get; set; }
-        [Required]
-        [DataType(DataType.Date, ErrorMessage = "Date only")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> StartDate { get; set; }
-        
-        [DataType(DataType.Date, ErrorMessage = "Date only")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> EndDate { get; set; }
         public string Remarks { get; set; }
     

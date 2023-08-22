@@ -126,7 +126,7 @@ namespace AssetSystem.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
+            }
 
         private bool UserDetailExists(int id)
         {

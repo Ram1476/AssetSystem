@@ -28,7 +28,7 @@
           <Property Name="Serial_No" Type="varchar" MaxLength="50" />
           <Property Name="Remarks" Type="varchar" MaxLength="100" />
           <Property Name="Isdeleted" Type="varchar" MaxLength="3" />
-          <Property Name="Attachment" Type="varbinary(max)" />
+          <Property Name="Attachment" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="MultipleAttachment">
           <Key>
@@ -82,7 +82,7 @@
           <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RoleName" Type="varchar" MaxLength="50" />
         </EntityType>
-        <Association Name="FK__AssetDeta__Asset__11D4A34F">
+        <Association Name="FK__AssetDeta__Asset__3E1D39E1">
           <End Role="AssetDeclaration" Type="Self.AssetDeclaration" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
@@ -96,7 +96,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__MultipleA__Asset__731B1205">
+        <Association Name="FK__MultipleA__Asset__45BE5BA9">
           <End Role="AssetDetail" Type="Self.AssetDetail" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
@@ -110,7 +110,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__UserAsset__Asset__5E1FF51F">
+        <Association Name="FK__UserAsset__Asset__41EDCAC5">
           <End Role="AssetDetail" Type="Self.AssetDetail" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
@@ -124,7 +124,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__UserAsset__UserE__5F141958">
+        <Association Name="FK__UserAsset__UserE__42E1EEFE">
           <End Role="UserDetail" Type="Self.UserDetail" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
@@ -160,19 +160,19 @@
           <EntitySet Name="UserDetail" EntityType="Self.UserDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogins" EntityType="Self.UserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AssetDeta__Asset__11D4A34F" Association="Self.FK__AssetDeta__Asset__11D4A34F">
+          <AssociationSet Name="FK__AssetDeta__Asset__3E1D39E1" Association="Self.FK__AssetDeta__Asset__3E1D39E1">
             <End Role="AssetDeclaration" EntitySet="AssetDeclaration" />
             <End Role="AssetDetail" EntitySet="AssetDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK__MultipleA__Asset__731B1205" Association="Self.FK__MultipleA__Asset__731B1205">
+          <AssociationSet Name="FK__MultipleA__Asset__45BE5BA9" Association="Self.FK__MultipleA__Asset__45BE5BA9">
             <End Role="AssetDetail" EntitySet="AssetDetail" />
             <End Role="MultipleAttachment" EntitySet="MultipleAttachment" />
           </AssociationSet>
-          <AssociationSet Name="FK__UserAsset__Asset__5E1FF51F" Association="Self.FK__UserAsset__Asset__5E1FF51F">
+          <AssociationSet Name="FK__UserAsset__Asset__41EDCAC5" Association="Self.FK__UserAsset__Asset__41EDCAC5">
             <End Role="AssetDetail" EntitySet="AssetDetail" />
             <End Role="UserAsset" EntitySet="UserAsset" />
           </AssociationSet>
-          <AssociationSet Name="FK__UserAsset__UserE__5F141958" Association="Self.FK__UserAsset__UserE__5F141958">
+          <AssociationSet Name="FK__UserAsset__UserE__42E1EEFE" Association="Self.FK__UserAsset__UserE__42E1EEFE">
             <End Role="UserDetail" EntitySet="UserDetail" />
             <End Role="UserAsset" EntitySet="UserAsset" />
           </AssociationSet>
@@ -193,12 +193,12 @@
           <EntitySet Name="UserLogins" EntityType="AssetManagementModel.UserLogin" />
           <EntitySet Name="UserRoles" EntityType="AssetManagementModel.UserRole" />
           <AssociationSet Name="Fk_AssetId" Association="AssetManagementModel.Fk_AssetId">
-            <End Role="AssetDeclaration" EntitySet="AssetDeclarations" />
-            <End Role="AssetDetail" EntitySet="AssetDetails" />
+            <End EntitySet="AssetDeclarations" Role="AssetDeclaration" />
+            <End EntitySet="AssetDetails" Role="AssetDetail" />
           </AssociationSet>
           <AssociationSet Name="Fk_UserAstID" Association="AssetManagementModel.Fk_UserAstID">
-            <End Role="AssetDetail" EntitySet="AssetDetails" />
-            <End Role="UserAsset" EntitySet="UserAssets" />
+            <End EntitySet="AssetDetails" Role="AssetDetail" />
+            <End EntitySet="UserAssets" Role="UserAsset" />
           </AssociationSet>
           <AssociationSet Name="Fk_UAuserId" Association="AssetManagementModel.Fk_UAuserId">
             <End Role="UserDetail" EntitySet="UserDetails" />
@@ -210,8 +210,8 @@
           </AssociationSet>
           <EntitySet Name="MultipleAttachments" EntityType="AssetManagementModel.MultipleAttachment" />
           <AssociationSet Name="FK__MultipleA__Asset__731B1205" Association="AssetManagementModel.FK__MultipleA__Asset__731B1205">
-            <End Role="AssetDetail" EntitySet="AssetDetails" />
-            <End Role="MultipleAttachment" EntitySet="MultipleAttachments" />
+            <End EntitySet="AssetDetails" Role="AssetDetail" />
+            <End EntitySet="MultipleAttachments" Role="MultipleAttachment" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="AssetDeclaration">
@@ -227,18 +227,18 @@
           <Key>
             <PropertyRef Name="AssetEntryID" />
           </Key>
-          <Property Name="AssetEntryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssetEntryID" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
           <Property Name="AssetId" Type="Int32" />
-          <Property Name="AssetType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="AssetNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="AssetDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PurchaseDate" Type="DateTime" Precision="0" />
-          <Property Name="WarrantyStartDate" Type="DateTime" Precision="0" />
-          <Property Name="WarrantyEndDate" Type="DateTime" Precision="0" />
-          <Property Name="Serial_No" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Isdeleted" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Attachment" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="AssetType" MaxLength="50" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="AssetNo" MaxLength="20" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="AssetDescription" MaxLength="100" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="PurchaseDate" Precision="0" Type="DateTime" />
+          <Property Name="WarrantyStartDate" Precision="0" Type="DateTime" />
+          <Property Name="WarrantyEndDate" Precision="0" Type="DateTime" />
+          <Property Name="Serial_No" MaxLength="50" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="Remarks" MaxLength="100" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="Isdeleted" MaxLength="3" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="Attachment" Type="String" />
           <NavigationProperty Name="AssetDeclaration" Relationship="AssetManagementModel.Fk_AssetId" FromRole="AssetDetail" ToRole="AssetDeclaration" />
           <NavigationProperty Name="UserAssets" Relationship="AssetManagementModel.Fk_UserAstID" FromRole="AssetDetail" ToRole="UserAsset" />
           <NavigationProperty Name="MultipleAttachments" Relationship="AssetManagementModel.FK__MultipleA__Asset__731B1205" FromRole="AssetDetail" ToRole="MultipleAttachment" />
@@ -293,8 +293,8 @@
           <NavigationProperty Name="UserLogins" Relationship="AssetManagementModel.Fk_RoleId" FromRole="UserRole" ToRole="UserLogin" />
         </EntityType>
         <Association Name="Fk_AssetId">
-          <End Type="AssetManagementModel.AssetDeclaration" Role="AssetDeclaration" Multiplicity="0..1" />
-          <End Type="AssetManagementModel.AssetDetail" Role="AssetDetail" Multiplicity="*" />
+          <End Type="AssetManagementModel.AssetDeclaration" Multiplicity="0..1" Role="AssetDeclaration" />
+          <End Type="AssetManagementModel.AssetDetail" Multiplicity="*" Role="AssetDetail" />
           <ReferentialConstraint>
             <Principal Role="AssetDeclaration">
               <PropertyRef Name="AssetId" />
@@ -305,8 +305,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Fk_UserAstID">
-          <End Type="AssetManagementModel.AssetDetail" Role="AssetDetail" Multiplicity="0..1" />
-          <End Type="AssetManagementModel.UserAsset" Role="UserAsset" Multiplicity="*" />
+          <End Type="AssetManagementModel.AssetDetail" Multiplicity="0..1" Role="AssetDetail" />
+          <End Type="AssetManagementModel.UserAsset" Multiplicity="*" Role="UserAsset" />
           <ReferentialConstraint>
             <Principal Role="AssetDetail">
               <PropertyRef Name="AssetEntryID" />
@@ -350,10 +350,10 @@
           <NavigationProperty Name="AssetDetail" Relationship="AssetManagementModel.FK__MultipleA__Asset__731B1205" FromRole="MultipleAttachment" ToRole="AssetDetail" />
         </EntityType>
         <Association Name="FK__MultipleA__Asset__731B1205">
-          <End Type="AssetManagementModel.AssetDetail" Role="AssetDetail" Multiplicity="0..1">
+          <End Type="AssetManagementModel.AssetDetail" Multiplicity="0..1" Role="AssetDetail">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="AssetManagementModel.MultipleAttachment" Role="MultipleAttachment" Multiplicity="*" />
+          <End Type="AssetManagementModel.MultipleAttachment" Multiplicity="*" Role="MultipleAttachment" />
           <ReferentialConstraint>
             <Principal Role="AssetDetail">
               <PropertyRef Name="AssetEntryID" />

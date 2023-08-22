@@ -33,7 +33,8 @@ namespace MVC_Asset.Models
 
         [NotMapped]
         public string FullName { get; set; }
-    
+
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAsset> UserAssets { get; set; }
     }

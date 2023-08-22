@@ -63,10 +63,11 @@ namespace MVC_Asset.Controllers
                     details.Serial_No = item.Serial_No;
                     details.Remarks = item.Remarks;
                     details.AssetDescription = item.AssetDescription;
-                    if (item.Attachment != null)
-                    {
-                        details.ImagePath = Encoding.ASCII.GetString(item.Attachment);
-                    }
+                    details.Attachment = item.Attachment;
+                    //if (item.Attachment != null)
+                    //{
+                    //    details.ImagePath = Encoding.ASCII.GetString(item.Attachment);
+                    //}
 
                     newDetails.Add(details);
                 }
@@ -127,7 +128,8 @@ namespace MVC_Asset.Controllers
                     //Asset.Attachment = new byte[Attach.ContentLength];
                     //Attach.InputStream.Read(Asset.Attachment, 0, Attach.ContentLength);
 
-                    Asset.Attachment = Encoding.ASCII.GetBytes(Asset.ImagePath);
+                    //Asset.Attachment = Encoding.ASCII.GetBytes(Asset.ImagePath);
+                    Asset.Attachment = Asset.ImagePath;
                     //Asset.Attachment = new byte[Attach.ContentLength];
                     //Attach.InputStream.Read(Asset.Attachment, 0, Attach.ContentLength);
                     string addPath = string.Empty;
@@ -143,22 +145,24 @@ namespace MVC_Asset.Controllers
                         if (response.IsSuccessStatusCode)
                         {
                             var findTable = db.AssetDetails.Where (x => x.AssetNo == Asset.AssetNo).FirstOrDefault();
-
-                            foreach (var item in Attach)
+                            if (Attach.Count > 1)
                             {
-                                string attachName = Path.GetFileNameWithoutExtension(item.FileName);
-                                string attachextension = Path.GetExtension(item.FileName);
-                                attachName = attachName + DateTime.Now.ToString("yymmssfff") + attachextension;
-                                Asset.ImagePath = "~/image/" + attachName;
-                                attachName = Path.Combine(Server.MapPath("~/image/"), attachName);
-                                item.SaveAs(attachName);
-                                addPath = addPath + Asset.ImagePath + ";";
-                            }
-                            newAttach.AssetId = findTable.AssetEntryID;
-                            newAttach.Attachments = addPath;
+                                foreach (var item in Attach)
+                                {
+                                    string attachName = Path.GetFileNameWithoutExtension(item.FileName);
+                                    string attachextension = Path.GetExtension(item.FileName);
+                                    attachName = attachName + DateTime.Now.ToString("yymmssfff") + attachextension;
+                                    Asset.ImagePath = "~/image/" + attachName;
+                                    attachName = Path.Combine(Server.MapPath("~/image/"), attachName);
+                                    item.SaveAs(attachName);
+                                    addPath = addPath + Asset.ImagePath + ";";
+                                }
+                                newAttach.AssetId = findTable.AssetEntryID;
+                                newAttach.Attachments = addPath;
 
-                            db.MultipleAttachments.Add(newAttach);
-                            db.SaveChanges();
+                                db.MultipleAttachments.Add(newAttach);
+                                db.SaveChanges();
+                            }
 
                             if (result != null)
                             {
@@ -235,10 +239,11 @@ namespace MVC_Asset.Controllers
                         details.Serial_No = result.Serial_No;
                         details.Remarks = result.Remarks;
                         details.AssetDescription = result.AssetDescription;
-                        if (result.Attachment != null)
-                        {
-                            details.ImagePath = Encoding.ASCII.GetString(result.Attachment);
-                        }
+                        details.Attachment = result.Attachment;
+                        //if (result.Attachment != null)
+                        //{
+                        //    details.ImagePath = Encoding.ASCII.GetString(result.Attachment);
+                        //}
                     }
                     return View(details);
 
@@ -272,7 +277,8 @@ namespace MVC_Asset.Controllers
                     //Asset.Attachment = new byte[Attach.ContentLength];
                     //Attach.InputStream.Read(Asset.Attachment, 0, Attach.ContentLength);
 
-                    Asset.Attachment = Encoding.ASCII.GetBytes(Asset.ImagePath);
+                    //Asset.Attachment = Encoding.ASCII.GetBytes(Asset.ImagePath);
+                    Asset.Attachment = Asset.ImagePath;
                     //Asset.Attachment = new byte[Attach.ContentLength];
                     //Attach.InputStream.Read(Asset.Attachment, 0, Attach.ContentLength);
                 }
@@ -360,6 +366,7 @@ namespace MVC_Asset.Controllers
         {
             AssetDetail newAsset = db.AssetDetails.Where(x => x.AssetEntryID == Asset.AssetEntryID).FirstOrDefault();
             newAsset.Remarks = "Deleted Reason - " + Asset.Remarks;
+            newAsset.Isdeleted = "Yes";
 
             db.SaveChanges();
             return Json(newAsset,JsonRequestBehavior.AllowGet);

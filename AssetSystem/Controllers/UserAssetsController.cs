@@ -45,6 +45,7 @@ namespace AssetSystem.Controllers
         public IHttpActionResult GetUserAsset(int id)
         {
             UserAsset userAsset = db.UserAssets.Find(id);
+            
             if (userAsset == null)
             {
                 return NotFound();
@@ -52,6 +53,8 @@ namespace AssetSystem.Controllers
 
             return Ok(userAsset);
         }
+
+     
 
         // PUT: api/UserAssets/5
         [ResponseType(typeof(void))]

@@ -31,7 +31,7 @@ namespace AssetSystem.Models
         public string Serial_No { get; set; }
         public string Remarks { get; set; }
         public string Isdeleted { get; set; }
-        public byte[] Attachment { get; set; }
+        public string Attachment { get; set; }
     
         public virtual AssetDeclaration AssetDeclaration { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

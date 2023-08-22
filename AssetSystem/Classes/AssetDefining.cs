@@ -33,7 +33,7 @@ namespace AssetSystem.Classes
         public string Serial_No { get; set; }
         public string Remarks { get; set; }
         public string Isdeleted { get; set; }
-        public byte[] Attachment { get; set; }
+        public string Attachment { get; set; }
 
         [NotMapped]
         public DateTime? LastModified { get; set; }

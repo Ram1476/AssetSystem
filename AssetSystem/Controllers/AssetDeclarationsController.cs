@@ -47,6 +47,41 @@ namespace AssetSystem.Controllers
             return Ok(assetDeclaration);
         }
 
+        // GET: api/AssetDeclarations/MON
+        [ResponseType(typeof(AssetDeclaration))]
+        public IHttpActionResult GetAssetDeclarationName(string name)
+        {
+            if (name.Length <= 3)
+            {
+                if (db.AssetDeclarations.Count(e => e.AssertPrefix == name.ToUpper()) > 0)
+                {
+                    return Ok("Yes");
+                }
+                else
+                {
+                    return Ok("No");
+                }
+            }
+            else
+            {
+                if (db.AssetDeclarations.Count(e => e.AssertType.ToLower() == name.ToLower()) > 0)
+                {
+                    return Ok("Yes");
+                }
+                else
+                {
+                    return Ok("No");
+                }
+            }
+            
+            //if (assetDeclaration == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //return Ok();
+        }
+
         // PUT: api/AssetDeclarations/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutAssetDeclaration(int id, AssetDeclaration assetDeclaration)

@@ -48,7 +48,7 @@ namespace MVC_Asset.Models
         public string Isdeleted { get; set; }
 
         [MaxLength]
-        public byte[] Attachment { get; set; }
+        public string Attachment { get; set; }
 
         [NotMapped]
         public string ImagePath { get; set; }

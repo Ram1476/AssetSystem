@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3eea1f696dfd4df196c7a85ff79b63e8" Name="Diagram1" ZoomLevel="86">
+      <Diagram DiagramId="3eea1f696dfd4df196c7a85ff79b63e8" Name="Diagram1" ZoomLevel="98">
         <EntityTypeShape EntityType="AssetManagementModel.AssetDeclaration" Width="1.5" PointX="0.75" PointY="2" />
         <EntityTypeShape EntityType="AssetManagementModel.AssetDetail" Width="1.5" PointX="3" PointY="1" />
         <EntityTypeShape EntityType="AssetManagementModel.UserAsset" Width="1.5" PointX="5.25" PointY="1.25" />
